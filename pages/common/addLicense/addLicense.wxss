@@ -1,0 +1,224 @@
+.license-header-wrapper{
+  position: relative;
+  width: 100%;
+  height: 480rpx;
+  margin-bottom: 96rpx;
+}
+.license-bg{
+  position: absolute;
+  width: 100%;
+  height: 480rpx; 
+  vertical-align: baseline;
+}
+.title-wrapper{
+  position: relative;
+  top: 32rpx;
+  padding-left: 40rpx;
+  color: #fff;
+}
+.license-header-title{
+  font-size: 24px;
+  font-weight: bold;
+}
+.license-header-desc{
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.license-wrapper{
+  position: relative;
+  top: 98rpx;
+} 
+.license-box{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40rpx;
+}
+.license-item{
+  width: 80rpx;
+  height: 106rpx;
+  font-size: 24px;
+  line-height: 106rpx;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  box-sizing: border-box;
+}
+.province-item {
+  position: relative;
+}
+.province-item image{
+  width: 80rpx;
+  height: 106rpx;
+}
+.province-item text{
+  display: inline-block;
+  position: absolute;
+  left: 0; 
+  width: 80rpx;
+  line-height: 106rpx;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.dot{
+  color: #fff;
+  font-size: 24px;
+}
+.normal-color{
+  color: #0DA5EA;
+}
+.new-energy-color{
+  color: #12CF85;
+}
+.normal-number-box{
+  height: 106rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1.5px solid #fff;
+  border-radius: 8rpx;
+}
+.normal-number-item{
+  width: 70rpx;
+  height:100%;
+  border-right:1.5px solid #fff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 106rpx;
+  text-align: center;
+}
+.normal-number-item-last{
+  border-right: 0;
+}
+.new-energy-number-null{
+  border-radius: 8rpx;
+  border: 1.5px dashed #12CF85;
+  color: #12CF85;
+  font-size: 11px;
+  font-weight: normal;
+}
+.new-energy-number{
+  border-radius: 8rpx;
+  border: 1.5px solid #12CF85;
+}
+
+.complete-btn-wrpper{
+  position: relative;
+  padding: 0 64rpx;
+}
+.complete-btn{
+  border: 0;
+  outline: none;
+  background-color: #ED3E35;
+  border-radius: 4rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 16px;
+  color: #fff;
+}
+.province-keyboard-box{
+  width: 100%;
+  height: 450rpx;
+  background-color: rgba(210,213,219,0.9);
+  position: absolute;
+  padding: 20rpx 10rpx 0;
+}
+.keyboard-item{
+  float: left;
+  width: 64rpx;
+  height: 84rpx;
+  box-shadow: 0 2rpx 0 0 rgba(0,0,0,0.35);
+  border-radius: 10rpx;
+  background-color: #fff;
+  line-height: 84rpx;
+  text-align: center;
+  color: #030303;
+  font-size: 20px;
+  margin-bottom: 22rpx;
+  margin-right: 10rpx;
+}
+.keyboard-item-hover{
+  background-color: #888;
+}
+
+.keyboard-return{
+  float: right;
+  width: 175rpx;
+  height: 84rpx;
+  border-radius: 10rpx;
+  background-color: #ADB3BD;
+  box-shadow: 0 2rpx 0 0 rgba(0,0,0,0.35);
+  line-height: 86rpx;
+  text-align: center;
+  color: #030303;
+  font-size: 20px;
+}
+
+.plate-keyboard-box{
+  position: absolute;
+  width: 100%;
+  bottom: -610rpx;
+  transition: bottom 0.3s ease;
+}
+.plate-keyboard-complete{
+  position: relative;
+  width: 100%; 
+  height: 84rpx;
+  background-color: #fff;
+}
+.plate-keyboard-complete view{
+  float: right;
+  font-size: 16px;
+  line-height: 84rpx;
+  height: 84rpx;
+  text-align: center;
+  margin-right: 32rpx;
+}
+.plate-number-keyboard-box{
+  position: relative;
+  width: 100%;
+  height: 116rpx;
+  padding: 16rpx 10rpx;
+  background-color: rgba(210,213,219,0.9);
+  border-bottom: 2rpx solid #ACB1B8;
+}
+.plate-number-keyboard-box .keyboard-item{
+  margin-bottom: 0;
+}
+.plate-letter-keyboard-box{
+  position: relative;
+  width: 100%;
+  height: 340rpx;
+  border-top: 2rpx solid EAEFF6;
+  background-color: rgba(210,213,219,0.9);
+  padding: 20rpx 10rpx 0;
+}
+.plate-letter-keyboard-box .keyboard-item{
+  line-height: 86rpx;
+}
+.keyboard-delete{
+  float: right;
+  width: 84rpx;
+  height: 84rpx;
+  line-height: 94rpx;
+  text-align: center;
+  border-radius: 10rpx;
+  background-color: #ADB3BD;
+  box-shadow: 0 2rpx 0 0 rgba(0,0,0,0.35);
+}
+.keyboard-delete image{
+  width: 46rpx;
+  height: 34rpx;
+}
+
+.margin-right-0{
+  margin-right: 0;
+}
+.bottom-0{
+  bottom: 0;
+}

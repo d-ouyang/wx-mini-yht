@@ -1,0 +1,5 @@
+.check-box image{
+  width: 48rpx;
+  height: 48rpx;
+  vertical-align: middle;
+}

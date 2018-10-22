@@ -1,0 +1,27 @@
+<view class='container'>
+  <view class='order-over-header'>
+    <image class='order-over-bg' src='../../../resource/image/order-over-bg.png'></image>
+    <view class='order-over-header-text'>
+      <image src='../../../resource/image/order-over-gou.png'></image>
+      <view>场库缴费成功</view>
+    </view>
+  </view>
+
+  <view class='order-info-wrapper'>
+    <view class='order-info-item order-info-plate'>{{payInfo.carNumber}}</view>
+    <view class='order-info-item'>
+      <view class='order-title'>停车点</view>
+      <view class='order-value'>{{payInfo.parkName}}</view>
+    </view>
+    <view class='order-info-item'>
+      <view class='order-title'>缴费时间</view>
+      <view class='order-value'>{{payInfo.endTime}}</view>
+    </view>
+  </view>
+
+  <view class='order-desc'>*请在{{payInfo.freeMinute}}分钟内离开场库，如超时将会重新计时收费</view>
+
+  <view class='order-btn'>
+    <button bindtap='bindOverPay'>完成</button>
+  </view>
+</view>

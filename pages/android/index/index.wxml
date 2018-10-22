@@ -1,0 +1,113 @@
+<view class='container'>
+  <view class='header box-sizing'>
+    <view class='search-box-wrapper box-sizing'>
+      <view bindtap='goToSearch' class='search-box box-sizing'>
+        <image class='search-icon' src='/resource/icon/search.png'></image>
+        <view class='destination {{isDestination ? "destination-active" : ""}}'>{{destinationValue}}</view>
+        
+      </view>
+    </view>
+    <view class='tabbar box-sizing'>
+      <view bindtap='bindtabpayment' data-active='{{parkActive}}' class='tab-item left-148 {{parkActive ? "" : "active-color"}}'>
+        缴费
+        <view wx:if='{{hasOrder}}' class='red-dot'></view>
+      </view>
+      <view bindtap='bindtabpark' data-active='{{parkActive}}' class='tab-item right-148 {{parkActive ? "active-color" : ""}}'>停车场</view>
+      <view class='active-bottom {{parkActive ? "left-484" : "left-148"}}'></view>
+    </view>
+  </view>
+
+  <!-- 停车场模块 -->
+  <view wx:if='{{parkActive}}' class='modal parking-modal'>
+    <view class='modal-box box-sizing'>
+      <view wx:if='{{!isDestination}}' class='modal-box-header box-sizing'>
+        <view class='location-title'>附近停车场</view>
+        <view class='location-address'>
+          <image src='../../../resource/icon/location.png'></image>
+          <view>{{locationAddress}}</view>
+        </view>
+      </view>
+      <view class='modal-box-wrapper'>
+        <view wx:if='{{parkList.length}}' class='park-list box-sizing'>
+          <view class='park-item' wx:for='{{parkList}}' wx:key='{{item.park_name}}'>
+            <view class='item-top'>
+              <view class='item-name'>{{item.park_name}}</view>
+              <view class='item-charge'>
+                <view class='item-charge-amount'>
+                  ￥<text style='color:#3A4557;line-height:1.0;'>{{item.amount}}</text>
+                </view>
+                <view class='item-charge-type'>/{{item.charge}}</view>
+              </view>
+            </view>
+            <view class='item-address'>{{item.addr}}</view>
+            <view class='item-bottom'>
+              <view class='item-info no-wrap'>距目的地 {{item.distanceStr}} | 共车位 {{item.usable_spaces}} 个</view>
+              <view bindtap='bindNavigate' data-nav-info='{{item.navInfo}}' class='nav-btn'>导航</view>
+            </view>
+          </view>
+        </view>
+
+        <block wx:else>
+          <no-data noData='{{parkListNoData}}'></no-data>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 缴费模块 -->
+  <view wx:else class='modal payment-modal'>
+    <view class='modal-box box-sizing'>
+      <view wx:if='{{!needAddLicense && hasOrder}}' class='car-order-list box-sizing'>
+        <view class='car-order-item' wx:for='{{carList}}' wx:key='{{item.car_number}}' wx:if='{{item.hasOrder}}'>
+          <view class='order-item-left'>
+            <view class='order-car-number {{item.isNewEnergy ? "car-number-new-energy" : "car-number-normal"}}'>
+              <view class='car-number {{item.isNewEnergy ? "car-number-new-energy-border" : "car-number-normal-border"}}'>{{item.carNumber}}</view>
+            </view>
+            <view class='parking-duration'>
+              <view wx:if='{{item.status}}' class='time-duration'>{{item.duration}}</view>
+              <view wx:else class='time-duration'>{{item.duration}}</view>
+              <!-- <view class='time-duration'>
+                <view class='hours-minutes'>00</view>
+                <view class='colon'>:</view>
+                <view class='hours-minutes'>00</view>
+                <view class='colon'>:</view>
+                <view class='seconds'>00</view>
+              </view> -->
+            </view>
+            <view class='parking-status'>{{item.status ? "停车中" : "离场中"}} | {{item.parkName}}</view>
+          </view>
+          <view bindtap='bindpay' data-wxsp='{{item.wxsp}}' data-need-pay='{{item.needPay}}' data-info='{{item}}' class='order-item-right'>
+            <image wx:if='{{item.needPay && item.wxsp}}' src='/resource/image/go-to-payment.png'></image>
+            <image wx:else src='/resource/image/need-not-pay.png'></image>
+          </view>
+        </view>
+      </view>
+
+      <block wx:elif='{{!needAddLicense && !hasOrder}}'>
+        <no-data noData='{{orderNoData}}'></no-data>
+      </block>
+
+      <block wx:if='{{needAddLicense}}' class='no-plate'>
+        <no-data noData='{{plateNoData}}'></no-data>
+        <view class='button-wrapper'>
+          <button wx:if='{{!hasPhone}}' class='add-phone' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>
+            + 添加车牌
+          </button>
+
+          <button wx:if='{{hasPhone}}' bindtap='addLicense' class="add-phone">
+            + 添加车牌
+          </button>
+        </view>
+      </block>  
+    </view>
+    <view wx:if='{{hasOrder}}' bindtap='bindrefresh' class='refresh'>
+      <image src='/resource/icon/refresh.png'></image>
+      <text>点击刷新订单状态</text>
+    </view>
+  </view>
+
+  <!-- 个人中心 -->
+  <view bindtap='goToPersonal' class='personal-entre'>
+    <image src='/resource/icon/android-user-avatar.png'></image>
+  </view>
+</view>

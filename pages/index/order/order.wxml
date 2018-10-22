@@ -1,0 +1,55 @@
+<view class='container'>
+  <view class='order-header'>
+    <image src='../../../resource/image/order-bg.png'></image>
+  </view>
+
+  <view class='order-info-wrapper'>
+    <view bindtap='selectPlate' class='order-info-item order-info-plate'>
+      <text>{{payOrderInfo.carNumber}}</text>
+    </view>
+    <view class='order-info-item order-info-destination'>
+      <view class='order-title'>停车点</view>
+      <view class='order-value order-info-destination-name'>{{payOrderInfo.parkName}}</view>
+    </view>
+    <view class='order-info-item'>
+      <view class='order-title'>入场时间</view>
+      <view class='order-value'>{{payOrderInfo.inTime}}</view>
+    </view>
+    <view class='order-info-item'>
+      <view class='order-title'>停车时长</view>
+      <view class='order-value'>{{payOrderInfo.parkTime}}</view>
+    </view>
+    <view wx:if='{{payOrderInfo.hasPayNote}}' class='order-info-item'>
+      <view class='order-title'>上次结算时间</view>
+      <view class='order-value'>{{payOrderInfo.lastPayTime}}</view>
+    </view>
+  </view>
+
+  <view class='order-price-wrapper'>
+    <view class='order-info-item order-price'>
+      <view class='order-title order-price-title'>总计费用</view>
+      <view class='order-price-amount'>￥{{payOrderInfo.receivableAmt}}</view>
+    </view>
+    <view bindtap='selectCoupon' class='order-info-item order-coupon'>
+      <view class='order-title order-coupon-title'>优惠券</view>
+       <view class='order-coupon-amount'>
+        <text>暂无</text>
+        <!-- <image class='next' src='../../../resource/icon/next.png'></image> -->
+      </view> 
+      <!-- <view class='no-coupon'>暂无可用优惠券</view> -->
+    </view>
+    <view class='order-sum'>
+      <text class='order-sum-title'>小计</text>
+      <text class='order-sum-amount'>￥{{payOrderInfo.realAmt}}</text>
+    </view>
+  </view>
+
+  <!--支付入口  -->
+  <view class='pay-entrence-wrapper'>
+    <view class='pay-price'>
+      <view class='pay-price-amount'>￥{{payOrderInfo.realAmt}}</view>
+      <!-- <view class='pay-price-coupon'>无优惠</view> -->
+    </view>
+    <view bindtap='bindPay' class='pay-entrence'>支付</view>
+  </view>
+</view>

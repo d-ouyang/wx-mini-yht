@@ -1,0 +1,55 @@
+<view class='container'>
+  <view class='license-header-wrapper'>
+    <image class='license-bg' src='../../../resource/image/license-bg.png'></image>
+    <view class='title-wrapper box-sizing'>
+      <view class='license-header-title'>绑定车牌</view>
+      <view class='license-header-desc'>新能源车辆请输入7位数字或字母</view>
+    </view>
+    <view class='license-wrapper'>
+      <view class='license-box box-sizing'>
+        <view class='province-item license-item' bindtap='selectProvince'>
+          <image src='../../../resource/icon/{{is_new_energy ? "new-energy" : "normal"}}-icon.png'></image>
+          <text class='normal-color {{is_new_energy ? "new-energy-color" : ""}}'>{{plate_arr[0]}}</text>
+        </view>
+        <view class='dot'>·</view>
+        <view class='normal-number-box box-sizing' bindtap='selectPlate'>
+          <view class='normal-number-item'>{{plate_arr[1]}}</view>
+          <view class='normal-number-item'>{{plate_arr[2]}}</view>
+          <view class='normal-number-item'>{{plate_arr[3]}}</view>
+          <view class='normal-number-item'>{{plate_arr[4]}}</view>
+          <view class='normal-number-item'>{{plate_arr[5]}}</view>
+          <view class='normal-number-item normal-number-item-last'>{{plate_arr[6]}}</view>
+        </view>
+        <view wx:if='{{plate_arr[7] == ""}}' class='new-energy-number-null license-item' bindtap='selectPlate'>新能源</view>
+        <view wx:else class='new-energy-number license-item' bindtap='selectPlate'>{{plate_arr[7]}}</view> 
+        
+      </view>
+    </view>
+  </view>
+
+  <view class='complete-btn-wrpper box-sizing'>
+    <button bindtap='bindCpmplete' class='complete-btn'>完成</button>
+  </view>
+
+  <!--province keyboard  -->
+  <view hidden='{{!province_show}}' class='province-keyboard-box box-sizing bottom-0' style='height:{{isiPhoneX ? "518rpx" : "450rpx"}}'>
+    <view bindtap='bindProvinceItem' wx:for='{{province_data}}' wx:key='*this' data-index='{{index}}' hover-class='keyboard-item-hover' hover-start-time='10' hover-stay-time='200' class='keyboard-item {{(index == 9 || index == 19 || index == 29)? "margin-right-0" : ""}}'>{{item}}</view>
+    <view bindtap='provinceKeyboardReturn' class='keyboard-return'>return</view>
+  </view>
+
+  <!--plate keyboard -->
+  <view hidden='{{!plate_show}}' class='plate-keyboard-box {{plate_bottom ? "" : "bottom-0"}}'>
+     <view class='plate-keyboard-complete'>
+      <view bindtap='takeUpPlateKeyboard'>完成</view>
+    </view> 
+     <view class='plate-number-keyboard-box box-sizing'>
+      <view bindtap='bindPlateNumberItem' wx:for='{{plate_number}}' wx:key='*this' data-index='{{index}}' hover-class='keyboard-item-hover' hover-start-time='10' hover-stay-time='100' class='keyboard-item {{index == 9 ? "margin-right-0" : ""}}'>{{item}}</view>
+    </view> 
+    <view class='plate-letter-keyboard-box box-sizing' style='height:{{isiPhoneX ? "408rpx" : "340rpx"}}'>
+      <view bindtap='bindPlateLetterItem' wx:for='{{plate_letter}}' wx:key='*this' data-index='{{index}}' style='background-color:{{(index == 7 || index == 8) ? "#eee" : ""}}' hover-class='keyboard-item-hover' hover-start-time='10' hover-stay-time='100' class='keyboard-item {{(index == 9 || index == 19)? "margin-right-0" : ""}}'>{{item}}</view>
+      <view bindtap='bindPlateDelete' class='keyboard-delete'>
+        <image src='../../../resource/icon/keyboard-delete.png'></image>
+      </view>
+    </view>
+  </view>
+</view>

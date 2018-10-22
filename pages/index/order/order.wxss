@@ -1,0 +1,141 @@
+.container{
+  overflow: auto;
+}
+.order-header{
+  position: relative;
+  height: 132rpx;
+}
+.order-header image{
+  width: 100%;
+  height: 132rpx;
+}
+
+.order-info-wrapper{
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 40rpx;
+  background-color: #fff;
+  border-bottom: 0.5px solid #ECECEC;
+  margin-bottom: 14rpx;
+}
+.order-info-item{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 26rpx 0;
+  border-bottom: 0.5px solid #F4F6FA;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+}
+.order-title{
+  font-size: 32rpx;
+  color: #79808A;
+  letter-spacing: 2rpx;
+}
+.next{
+  width: 18rpx;
+  height: 30rpx;
+}
+.order-info-plate text{
+  font-size: 44rpx;
+  color: #2F2F33;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+.order-value{
+  font-size: 30rpx;
+  color: #9DADBD;
+  letter-spacing: 2rpx;
+}
+
+/*价格区域  */
+.order-price-wrapper{
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 40rpx;
+  background-color: #fff;
+  border-bottom: 0.5px solid #ECECEC;
+}
+.order-price-amount{
+  font-size: 30rpx;
+  color: #2F2F33;
+  letter-spacing: 2rpx;
+}
+.order-coupon-amount{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.order-coupon-amount text{
+  font-size: 30rpx;
+  color: #ED3E35;
+  margin-right: 20rpx;
+}
+.no-coupon{
+  font-size: 30rpx;
+  color: #BEC2CC;
+  letter-spacing: 2rpx;
+}
+.order-sum{
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding: 24rpx 0;
+  letter-spacing: 2rpx;
+}
+.order-sum-title{
+  font-size: 28rpx;
+  color: #2F2F33;
+  margin-right: 20rpx;
+}
+.order-sum-amount{
+  font-size: 44rpx;
+  font-weight: bold;
+}
+
+/*支付入口  */
+.pay-entrence-wrapper{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+.pay-price{
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100rpx;
+  padding: 18rpx 40rpx 16rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+.pay-price-amount{
+  font-size: 48rpx;
+  color: #EF5655;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+.pay-price-coupon{
+  font-size: 26rpx;
+  line-height: 1.2;
+  color: #CCCCCC;
+  font-weight: 300;
+  padding-left: 20rpx;
+  border-left: 2rpx solid #ccc;
+}
+.pay-entrence{
+  position: absolute;
+  width: 280rpx;
+  height: 100rpx;
+  top: 0;
+  right: 0;
+  background-color: #ED3E35;
+  line-height: 100rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 36rpx;
+}

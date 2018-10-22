@@ -1,0 +1,8 @@
+{
+  "backgroundColorTop": "#F4F6FA",
+  "backgroundColorBottom": "#F4F6FA",
+  "usingComponents": {
+    "no-data": "/components/no-data/no-data",
+    "no-more": "/components/no-more/no-more"
+  }
+}

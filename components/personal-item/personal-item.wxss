@@ -1,0 +1,44 @@
+/* components/personal-item.wxss */
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100rpx;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #FFFFFF;
+  justify-content: space-between;
+}
+
+.left-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.icon {
+  width: 44rpx;
+  height: 36rpx;
+}
+
+.title {
+  color: black;
+  margin-left: 24rpx;
+  font-size: 32rpx;
+}
+
+.next {
+  width: 16rpx;
+  height: 24rpx;
+  float: right;
+  padding-right: 40rpx;
+}
+
+.seperator {
+  width: 100%;
+  height: 2rpx;
+  background-color: #F4F6FA;
+}

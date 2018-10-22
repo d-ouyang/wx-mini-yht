@@ -1,0 +1,412 @@
+.search-box-wrapper{
+  height: 98rpx;
+  position: relative; 
+  padding: 16rpx 36rpx 14rpx;
+  background-color: #fff;
+}
+.search-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 68rpx;
+  border-radius: 2rpx;
+  background-color: #F1F3F7;
+  padding: 16rpx 18rpx;
+}
+.search-icon{
+  width: 40rpx;
+  height: 36rpx;
+  margin-right: 14rpx;
+}
+.destination{
+  font-size: 30rpx;
+  width: 560rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #ccc;
+}
+.destination-active{
+  color: #2F2F33;
+}
+
+#map{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.current-location{
+  position: absolute;
+  width: 116rpx;
+  height: 116rpx;
+  z-index: 500;
+  top: 134rpx;
+  right: 28rpx;
+}
+
+.modal-mask{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.modal-wrapper{
+  position: absolute;
+  width: 590rpx;
+  height: 344rpx;
+  border-radius: 8rpx;
+  top: 50%;
+  margin-top: -172rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.modal-box{
+  width: 100%;
+  height: 244rpx;
+  box-sizing: border-box;
+  border-bottom: 0.5px solid #EEEFF1; 
+  padding: 52rpx 40rpx 0;
+  background-color: #fff;
+}
+.modal-title{
+  font-size: 34rpx;
+  color: black;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.0;
+  margin-bottom: 36rpx;
+}
+.modal-content{
+  font-size: 30rpx;
+  color: #888;
+  line-height: 42rpx;
+  text-align: center;
+}
+.modal-btn-wrapper{
+  width: 100%;
+  background-color: #fff;
+}
+.modal-btn-wrapper button{
+  border-radius: 0;
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 36rpx;
+  color: #2657EB;
+}
+
+
+/* 添加车牌 */
+.button-wrapper{
+  position: absolute;
+  width: 352rpx;
+  left: 50%;
+  margin-left: -176rpx;
+  height: 128rpx;
+  bottom: 10rpx;
+}
+.shadow-image{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.add-phone{
+  position: absolute;
+  width: 324rpx;
+  height: 100rpx;
+  left:16rpx;
+  top:6rpx;
+  z-index: 100;
+  background-color: #2657EB;
+  color: #fff;
+  line-height: 100rpx;
+  font-size: 32rpx;
+  border-radius: 50rpx;
+}
+
+.map-bottom{
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease-out;
+}
+.map-bottom-top{
+  width: 100%;
+  height: 72rpx;
+  vertical-align: baseline;
+}
+.map-bottom-header{
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #fff;
+  transition: all 0.3s ease-out;
+}
+
+.map-bottom-header-left{
+  display: flex;
+  flex-direction: column;
+  margin-left: 48rpx;
+}
+.map-bottom-header-plate-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.map-bottom-header-plate{
+  position: relative;
+  margin-right: 8rpx;
+}
+.map-bottom-header-plate cover-view{
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.normal-class{
+  width: 220rpx;
+  background-color: #057BF7;
+  color: #fff;
+}
+.new-energy-class{
+  width: 240rpx;
+  background-color:#C4F9CB;
+  color: #2F2F33;
+}
+.normal-big-class{
+  width: 264rpx;
+  background-color: #057BF7;
+  color: #fff;
+}
+.new-energy-big-class{
+  width: 300rpx;
+  background-color:#C4F9CB;
+  color: #2F2F33;
+}
+
+.select-plate-icon{
+  width: 18rpx;
+  height: 10rpx;
+}
+
+/* 有订单时间 */
+.parking-duration{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 52rpx;
+  line-height: 1.0;
+  font-weight: 900;
+  margin:16rpx 0;
+}
+.time-duration{
+  width: 100%;
+  line-height: 1.0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.time-duration cover-view{
+  width: 64rpx;
+  line-height: 1.0;
+  text-align: center;
+}
+.hours-minutes{
+  color: #2F2F33;
+}
+.parking-duration .colon{
+  width: 17rpx;
+}
+.colon,
+.seconds {
+  color: #BEC2CC;
+}
+
+/* 停车中、停车点名字 */
+.status-name{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 28rpx;
+  line-height: 1.0;
+  color: #9DADBD;
+}
+.middle-line{
+  width: 2rpx;
+  height: 28rpx;
+  background-color: #9DADBD;
+  margin-left: 14rpx;
+  margin-right: 14rpx;
+}
+
+.map-bottom-header-right{
+  position: relative;
+  margin-right: 48rpx;
+}
+.navigation{
+  position: relative;
+  margin-right: 48rpx;
+  margin-top: 14rpx;
+}
+
+/* 右侧没有订单和有订单 */
+.no-payment{
+  font-size: 32rpx;
+  line-height: 1.1;
+  margin-top: 14rpx;
+  color: #BEC2CC;
+  font-weight: bold;
+}
+.has-payment{
+  position: relative;
+}
+.has-payment cover-image{
+  width: 170rpx;
+  height: 170rpx;
+}
+
+/* 车牌列表 */
+.plates-list-wrapper-box{
+  position: relative;
+  width: 100%;
+}
+.static-bg{
+  position: absolute;
+  width: 100%;
+  height: 184rpx;
+  background-color: #F4F6FA;
+  left: 0;
+  top: 0;
+}
+.plates-list-wrapper{
+  position: relative;
+  width: 100%;
+  height: 184rpx;
+  top: 52rpx;
+  background-color: #F4F6FA;
+  overflow: scroll;
+}
+.plates-list{
+  position: relative;
+  margin-left: 24rpx;
+}
+.plates-list-width-other{
+  width: 700rpx;
+}
+.plates-list-width{
+  width: 1000rpx;
+}
+.plates-item{
+  position: relative;
+  float: left;
+  margin-left: 24rpx;
+  text-align: center;
+}
+.plates-item cover-view{
+  font-size: 40rpx;
+  font-weight: 600;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.bottom-0{
+  bottom: 0;
+}
+
+.map-bottom-parking-name{
+  width: 440rpx;
+  line-height: 1.0;
+  font-size: 40rpx;
+  color: #2F2F33;
+  font-weight: bold;
+}
+.map-bottom-parking-info{
+  width: 440rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 28rpx;
+  line-height: 1.0;
+  color: #12CF85;
+  margin: 20rpx 0;
+}
+.middle-line-g{
+  width: 2rpx;
+  height: 28rpx;
+  background-color: #A1E9CD;
+  margin-left: 14rpx;
+  margin-right: 14rpx;
+}
+.map-bottom-parking-address{
+  width: 440rpx;
+  line-height: 1.05;
+  font-size: 28rpx;
+  color: #9DADBD;
+}
+.navigation-icon{
+  width: 200rpx;
+  height: 100rpx;
+}
+.navigation-text{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  color: #fff;
+  font-size: 40rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.product-wrapper{
+  position: relative;
+  height: 152rpx;
+  background-color: #F4F6FA;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-box{
+  width: 316rpx;
+  height: 88rpx;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-box cover-image{
+  width: 52rpx;
+  height: 44rpx;
+  margin-left: 24rpx;
+}
+.product-box cover-view {
+  font-size: 32rpx;
+  color: #4B4D78;
+  line-height: 88rpx;
+  margin-right: 24rpx;
+}
+.product-short-term{
+  margin-left: 40rpx;
+}
+.product-long-term{
+  margin-right: 40rpx;
+  margin-left: 40rpx;
+}
+.opacity-0{
+  opacity: 0;
+}
+
+
+
+

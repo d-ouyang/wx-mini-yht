@@ -1,0 +1,4 @@
+<view class='no-data'>
+  <image src='{{noData.image}}'></image>
+  <text>{{noData.desc}}</text>
+</view>

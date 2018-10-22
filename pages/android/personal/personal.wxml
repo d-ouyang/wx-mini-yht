@@ -1,0 +1,23 @@
+<view class='container'>
+  <view class='personal-header'>
+    <image src='../../../resource/image/personal-header-background.png'></image>
+    <view class='personal-info'>
+      <image class='avatar' src='{{userInfo.avatarUrl}}'></image>
+      <text class='nickname'>{{userInfo.nickName}}</text>
+      <button class='bind-phone' bindgetuserinfo='bindgetuserinfo' open-type='getUserInfo'></button>
+    </view>
+  </view>
+
+  <view class='functions'>
+    <view bindtap='bindFunctionItem' class='function-item' wx:for='{{items}}' wx:key='{{item.icon}}' data-router='{{item.router}}'>
+      <view class='function-item-title'>
+        <image src='{{item.icon}}'></image>
+        <text>{{item.title}}</text>
+      </view>
+      <image src='../../../resource/icon/next.png'></image>
+    </view>
+    <!-- <view wx:if='{{!hasPhone}}' class='no-phone'>
+      <button class='get-phone' bindgetphonenumber='getPhoneNumber' open-type='getPhoneNumber'></button>
+    </view> -->
+  </view>
+</view>

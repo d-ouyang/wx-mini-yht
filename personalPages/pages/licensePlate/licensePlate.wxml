@@ -1,0 +1,27 @@
+<view class='container'>
+  <view wx:if='{{hasCarPlates}}' class='license-plates-wrapper'>
+    <view class='license-plates-header'>
+      <view class='license-plates-header-title'>车牌号</view>
+      <view class='license-plates-default'>默认车牌</view>
+    </view>
+    <view class='license-plates-list'>
+      <view class='license-plates-item' wx:for='{{licensePlates}}' wx:key='{{item.value}}'>
+      <view class='license-plates-item-box {{item.leftAnimation ? "left-162" : ""}}' data-index='{{index}}' bindtouchstart='bindStartPoint' bindtouchend='bindEndPoint'>
+        <view class='item-top'>
+          <view>{{item.value}}</view>
+          <check isChecked='{{item.isChecked}}'></check>
+        </view>
+        <view class='bottom-line'></view>
+      </view>
+        
+      <view bindtap='bindDelete' class='item-delete' data-index='{{index}}'>删除</view>
+      </view>
+    </view>
+  </view>
+
+  <no-data wx:if='{{!hasCarPlates}}' noData='{{noData}}'></no-data>
+
+  <view bindtap='addLicense' wx:if='{{licensePlates.length < 3}}' class='add-wrapper'>
+    <button>添加新车牌</button>
+  </view>
+</view>

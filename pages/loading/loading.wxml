@@ -1,0 +1,15 @@
+<view class='container'>
+  <view wx:if='{{!isAuthorize}}' class='modal-mask'>
+      <view class='modal-wrapper'>
+        <view class='modal-box'>
+          <view class='modal-title'>用户未授权</view>
+          <view class='modal-content'>
+            <text>如需要正常使用周围停车场查看功能，请按确定并在授权管理中打开"位置"。</text>
+          </view>
+        </view>
+        <view class='modal-btn-wrapper'>
+          <button open-type='openSetting'>确定</button>
+        </view>
+      </view>
+    </view>
+</view>

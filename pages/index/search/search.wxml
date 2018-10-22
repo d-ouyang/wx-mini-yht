@@ -1,0 +1,56 @@
+<view class='wrapper'>
+  <view class='search-model-wrapper'>
+    <view class='search-wrapper'>
+      <view class='search-icon'>
+        <icon type='search' size='21' color='#bebebe'></icon>
+      </view>
+      <view class='search-input'>
+        <input bindinput='bindInput' bindconfirm='confirmInput' focus='true' placeholder-style='color:#BDBDBD' confirm-type='search' placeholder='你想停在哪里？' value="{{searchValue}}"></input>
+        <icon bindtap='resetValue' wx:if='{{resetValue}}' type='clear' size='16'></icon>
+      </view>
+    </view>
+  </view>
+
+  <view class='header-replace'></view>
+
+  <view wx:if='{{!historyModelShow}}' class='search-results-wrapper' style='height:{{searchResultHeight}}rpx'>
+    <view class='search-results'>
+      <block wx:for="{{searchResults}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+        <view class='search-item' bindtap='bindSearchItem' data-item='{{item}}'>
+          <view class='item-icon'>
+            <image wx:if="{{item.isGone}}" src='../../../resource/icon/search-history.png'></image>
+            <image wx:else src='../../../resource/icon/search-location.png'></image>
+          </view>
+          <view class='item-info-wrapper'>
+            <view class='item-info {{index == (searchResults.length-1) ? "item-info-last" : ""}}'>
+              <view class='item-title no-wrap'>{{item.title}}</view>
+              <view class='item-address no-wrap'>{{item.address}}</view>
+            </view>
+            <view class='item-distance'>{{item.distance}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class='current-location-wrapper box-sizing' wx:if="{{historyModelShow}}">
+    <view class='history-title'>当前位置</view>
+    <view bindtap='bindLocation' class='current-location'>
+      <text>{{locationAddress}}</text>
+    </view>
+  </view>
+
+  <view class='history-model-wrapper' wx:if="{{historyModelShow}}">
+    <view class='history-title'>历史记录</view>
+    <view class='history-container'>
+      <view wx:if="{{!historyData.length}}" class='history-none'>你还没搜索过目的地</view>
+      <view wx:else class='history-list'>
+        <block wx:for="{{historyData}}" wx:key="{{item.id}}">
+          <view bindtap='bindHistoryItem' class='history-item' data-history='{{item}}'>
+            <text>{{item.title}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

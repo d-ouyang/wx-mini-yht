@@ -1,0 +1,13 @@
+<!-- <view class='stock' style="width:{{size}}px;height:{{size}}px">
+  <canvas class="stock-bg" canvas-id="{{bg}}" style="width:{{size}}px;height:{{size}}px"></canvas>
+  <canvas class="stock-process" canvas-id="{{process}}" style="width:{{size}}px;height:{{size}}px"></canvas>
+  <slot></slot>
+</view> -->
+
+<view class='circle'>
+  <view class='circle-bottom' style='background-color:{{bottomColor}}'></view>
+  <view class='circle-middle'>
+    <view wx:for='{{circleData}}'  wx:key='{{index}}' class='circle-item' style='background-color:{{middleColor}}; transform:rotate({{index*90}}deg) skewY({{item.deg}}deg)'></view>
+  </view>
+  <view class='circle-top'></view>
+</view>

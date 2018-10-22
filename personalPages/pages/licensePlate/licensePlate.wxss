@@ -1,0 +1,99 @@
+.container{
+  box-sizing: border-box;
+  padding-top: 18rpx;
+}
+.license-plates-wrapper{
+  position: relative;
+  background-color: #fff;
+  height: 658rpx;
+}
+.license-plates-header{
+  box-sizing: border-box;
+  padding: 28rpx 40rpx;
+  border-bottom: 2rpx solid #EEEEEE;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.license-plates-header-title{
+  font-size: 32rpx;
+  color: #3A4557;
+  font-weight: 500;
+}
+.license-plates-default{
+  font-size: 30rpx;
+  color: #3A4557;
+}
+.license-plates-item-box{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  background-color: #fff;
+  left: 0;
+  transition: left 0.3s ease;
+}
+.left-162{
+  left:-162rpx;
+}
+.item-top{
+  position: relative;
+  width: 100%;
+  height: 96rpx;
+  box-sizing: border-box;
+  padding: 24rpx 40rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.item-top view{
+  font-size: 32rpx;
+  color: #2F2F33;
+  letter-spacing: 1px;
+}
+.bottom-line{
+  width: 670rpx;
+  height: 2rpx;
+  background-color: #F4F6FA;
+}
+.license-plates-item{
+  position: relative;
+  left: 0;
+  box-sizing: border-box;
+}
+.item-delete{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 162rpx;
+  height:96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  background-color: #ED3E35;
+  font-size: 32rpx;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.add-wrapper{
+  box-sizing: border-box;
+  padding: 0 64rpx;
+  margin-top: 96rpx;
+}
+.add-wrapper button{
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 4rpx;
+  background-color: #ED3E35;
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: 500;
+}
+.no-plates{
+  text-align: center;
+  font-size: 28rpx;
+  color: #888;
+  line-height: 96rpx;
+}

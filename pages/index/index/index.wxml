@@ -1,0 +1,118 @@
+<view class='container' id='container'>
+  <map id='map' bindtap='bindmaptap' bindmarkertap='bindmarkertap' markers='{{markers}}' longitude='{{currentLng}}' latitude='{{currentLat}}' circles='{{circles}}' scale='{{scale}}' include-points='{{includePoints}}' show-location>
+
+    <cover-image bindtap='bindLocation' class='current-location' src='/resource/icon/go-to-location.png'></cover-image>
+
+    <cover-view class='search-box-wrapper box-sizing'>
+      <cover-view bindtap='goToSearch' class='search-box box-sizing'>
+        <cover-image class='search-icon' src='../../../resource/icon/search.png'></cover-image>
+        <cover-view class='destination {{isDestination ? "destination-active" : ""}}'>{{destinationValue}}</cover-view>
+      </cover-view>
+    </cover-view>
+
+    <!-- 添加车牌 button -->
+    <cover-view class='button-wrapper' wx:if='{{needAddLicense}}'>
+      <cover-image class='shadow-image' src='/resource/image/shadow.png'></cover-image>
+      <button wx:if='{{!hasPhone}}' class='add-phone' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>
+        + 添加车牌
+      </button>
+
+      <button wx:if='{{hasPhone}}' bindtap='addLicense' class="add-phone">
+        + 添加车牌
+      </button>
+    </cover-view>
+    <!-- 有车牌 -->
+    <cover-view wx:if='{{!needAddLicense}}' style='transform:translateY({{plateTranslateY}}rpx);height:{{plateInfoHeight}}rpx;bottom:{{bottomNumber}}' class='map-bottom {{isPlateOpacity ? "opacity-0" : ""}} bottom-0'>
+
+      <cover-image class='map-bottom-top' src='../../../resource/image/map-bottom-top.png'></cover-image>
+      <cover-view class='map-bottom-header' style='height:{{payInfoHeight}}rpx'>
+
+        <cover-view hidden='{{hasPay}}' class='map-bottom-header-left' style='height:60rpx'>
+          <cover-view class='map-bottom-header-plate-box'>
+            <cover-view bindtap='getCarPlate' data-car-number='{{currentCarPlate.car_number}}' class='map-bottom-header-plate {{currentCarPlate.isNewEnergy ? "new-energy-class" : "normal-class"}}'>
+              <cover-view>{{currentCarPlate.carNumber}}</cover-view>
+            </cover-view>
+            <cover-image bindtap='getCarPlate' data-car-number='{{currentCarPlate.car_number}}' hidden='{{carList.length <= 1}}'  wx:if='{{!carListBox}}' class='select-plate-icon' src='../../../resource/icon/plate-unchecked.png'></cover-image>
+            <cover-image bindtap='getCarPlate' data-car-number='{{currentCarPlate.car_number}}' hidden='{{carList.length <= 1}}'  wx:else class='select-plate-icon' src='../../../resource/icon/plate-checked.png'></cover-image>
+          </cover-view>
+        </cover-view>
+        
+        <cover-view hidden='{{!hasPay}}' class='map-bottom-header-left' style='{{payInfoHeight}}rpx'>
+          <cover-view class='map-bottom-header-plate-box'>
+            <cover-view bindtap='getCarPlate' data-car-number='{{currentCarPlate.car_number}}' class='map-bottom-header-plate {{currentCarPlate.isNewEnergy ? "new-energy-class" : "normal-class"}}'>
+              <cover-view>{{currentCarPlate.carNumber}}</cover-view>
+            </cover-view>
+            <cover-image bindtap='getCarPlate' data-car-number='{{currentCarPlate.car_number}}' hidden='{{carList.length <= 1}}'  wx:if='{{!carListBox}}' class='select-plate-icon' src='../../../resource/icon/plate-unchecked.png'></cover-image>
+            <cover-image bindtap='getCarPlate' data-car-number='{{currentCarPlate.car_number}}' hidden='{{carList.length <= 1}}'  wx:else class='select-plate-icon' src='../../../resource/icon/plate-checked.png'></cover-image>
+          </cover-view>
+          <cover-view class='parking-duration'>
+            <cover-view wx:if='{{isOverDay && !freeTimeStatus}}' style='font-size:34rpx;width: 100%;text-align:left;line-height:52rpx;'>
+              {{overDayValue}}
+            </cover-view>
+            <cover-view wx:elif='{{!isOverDay && !freeTimeStatus}}' class='time-duration'>
+              <cover-view class='hours-minutes'>{{payH}}</cover-view>
+              <cover-view class='colon'>:</cover-view>
+              <cover-view class='hours-minutes'>{{payM}}</cover-view>
+              <cover-view class='colon'>:</cover-view>
+              <cover-view class='seconds'>{{payS}}</cover-view>
+            </cover-view>
+            <cover-view wx:else style='font-size:34rpx;width: 100%;text-align:left;line-height:52rpx;'>离场倒计时:{{freeTime}}</cover-view>
+          </cover-view>
+          <cover-view class='status-name'>
+            <cover-view>停车中</cover-view>
+            <cover-view class='middle-line'>|</cover-view>
+            <cover-view style='width: 340rpx;'>{{orderInfo.parkName}}</cover-view>
+          </cover-view>
+        </cover-view>
+
+        <cover-view class='map-bottom-header-right'>
+          <cover-view wx:if='{{!hasPay}}' class='no-payment'>暂无记录</cover-view> 
+          <cover-view bindtap='bindpay' data-wxsp='{{wxsp}}' data-pay='{{needPay}}' data-info='{{currentCarPlate}}' wx:else class='has-payment'>
+            <cover-image wx:if='{{needPay && wxsp}}' src='../../../resource/image/go-to-payment.png'></cover-image>
+            <cover-image wx:else src='../../../resource/image/need-not-pay.png'></cover-image>
+          </cover-view>
+        </cover-view>
+      </cover-view>
+      <!-- 车牌列表 -->
+      <cover-view wx:if='{{carList.length > 1}}' hidden='{{!carListBox}}' class='plates-list-wrapper-box'>
+        <cover-view class='static-bg'></cover-view>
+        <cover-view class='plates-list-wrapper'>
+          <cover-view class='plates-list {{(carList.length > 2) ? "plates-list-width" : "plates-list-width-other"}}'>
+            <cover-view bindtap='selectCarNumber' data-item='{{item}}' wx:for='{{carList}}' wx:key='{{item.car_number}}' class='plates-item {{item.isNewEnergy ? "new-energy-big-class" : "normal-big-class"}}'>
+              <cover-view>{{item.carNumber}}</cover-view>
+            </cover-view>
+          </cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
+
+    <!-- 停车场详情 -->
+    <cover-view wx:if='{{parkingShow}}' style='transform:translateY({{productTranslateY}}rpx);height:{{parkingInfoHeight}}rpx' class='map-bottom bottom-0 {{isParkingOpacity ? "opacity-0" : ""}}'>
+      <cover-image bindtap='switchBottomBox' class='map-bottom-top' src='../../../resource/image/map-bottom-top-park.png'></cover-image>
+      <cover-view class='map-bottom-header' style='height:176rpx;'>
+        <cover-view class='map-bottom-header-left'>
+          <cover-view class='map-bottom-parking-name no-wrap'>{{parkingInfo.park_name}}</cover-view>
+          <cover-view class='map-bottom-parking-info'>
+            距目的地{{parkingInfo.distanceStr}} | 余车位{{parkingInfo.usable_spaces}}个
+          </cover-view>
+          <cover-view class='map-bottom-parking-address no-wrap'>{{parkingInfo.addr}}</cover-view>
+        </cover-view>
+        <cover-view bindtap='bindNavigate' data-nav-info='{{parkingInfo.navInfo}}' class='navigation'>
+          <cover-image class='navigation-icon' src='../../../resource/image/navigation-btn-bg.png'></cover-image>
+          <cover-view class='navigation-text'>导航</cover-view>
+        </cover-view>
+      </cover-view>
+      <!-- 产品 -->
+      <cover-view wx:if='{{hasProduct}}' class='product-wrapper'>
+        <cover-view bindtap='bindProduct' wx:if='{{parkingInfo.hasStaggerProduct}}' class='product-short-term product-box'>
+          <cover-image src='../../../resource/icon/short-term-icon.png'></cover-image>
+          <cover-view>购买错峰产品</cover-view>
+        </cover-view>
+        <cover-view bindtap='bindProduct' wx:if='{{parkingInfo.hasLongLeaseProduct}}' class='product-long-term product-box'>
+          <cover-image src='../../../resource/icon/long-term-icon.png'></cover-image>
+          <cover-view>购买包月产品</cover-view>
+        </cover-view>
+      </cover-view>
+    </cover-view>
+  </map>
+</view>

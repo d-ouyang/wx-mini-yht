@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "车牌",
+  "disableScroll": true,
+  "usingComponents": {
+    "check": "/components/check/check",
+    "no-data": "/components/no-data/no-data"
+  }
+}

@@ -1,0 +1,366 @@
+.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  background-color: #fff; 
+  z-index: 100;
+}
+.search-box-wrapper{
+  height: 100rpx;
+  position: relative; 
+  padding: 16rpx 40rpx 16rpx; 
+  background-color: #fff;
+}
+.search-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 68rpx;
+  border-radius: 2rpx;
+  background-color: #F1F3F7;
+  padding: 16rpx 18rpx;
+}
+.search-icon{
+  width: 40rpx;
+  height: 36rpx;
+  margin-right: 14rpx;
+}
+.destination{
+  font-size: 30rpx;
+  width: 560rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #ccc;
+}
+.destination-active{
+  color: #2F2F33;
+}
+.canlceIcon{
+  position: relative;
+}
+.canlceIcon::before{
+  content: '';
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  bottom: -10rpx;
+  left: -10rpx;
+}
+
+.tabbar{
+  position: relative;
+  width: 100%;
+  height: 70rpx;
+  background-color: #fff;
+  border-bottom: 0.5px solid rgba(51,52,64,0.1);
+}
+.tab-item{
+  box-sizing: border-box;
+  position: absolute;
+  width: 120rpx;
+  height: 70rpx;
+  line-height: 1.0;
+  text-align: center;
+  font-size: 28rpx;
+  padding-top: 10rpx;
+  font-weight: 500;
+  color: #333440;
+}
+.left-148{
+  left:148rpx;
+}
+.left-484{
+  left:484rpx;
+}
+.right-148{
+  right: 148rpx;
+}
+.active-color{
+  color: #2657EB;
+}
+.red-dot{
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #F64A4B;
+  top: 20rpx;
+  right: 10rpx;
+}
+.active-bottom{
+  position: absolute;
+  width: 120rpx;
+  height: 6rpx;
+  background-color: #2657EB;
+  border-radius: 4rpx;
+  bottom: 0;
+  transition: left 0.3s ease-out;
+}
+
+.modal{
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 170rpx;
+}
+.modal-box-header{
+  width: 100%;
+  height: 102rpx;
+  padding: 48rpx 40rpx 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.location-title{
+  font-size: 44rpx;
+  color:#333440;
+  font-weight: 600;
+}
+.location-address{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.location-address image{
+  width: 20rpx;
+  height: 24rpx;
+  margin-right: 12rpx;
+}
+.location-address view{
+  font-size: 24rpx;
+  color: rgba(51,52,64,0.5);
+}
+
+.park-list{
+  margin-top: 24rpx;
+  padding: 0 40rpx 24rpx;
+  background-color: #F4F6FA;
+}
+.park-item{
+  width: 100%;
+  height: 236rpx;
+  box-sizing: border-box;
+  box-shadow:0 20rpx 30rpx 0 rgba(0,0,0,0.03);
+  border-radius: 20rpx;
+  background-color: #fff;
+  padding: 42rpx 28rpx 0;
+  margin-bottom: 24rpx;
+}
+.item-top{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rpx;
+}
+.item-name{
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #3A4557;
+  line-height: 1.0;
+}
+.item-charge{
+  color: #D5D5D7;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+.item-charge-amount{
+  font-size: 44rpx;
+  line-height: 1.0;
+  height: 48rpx;
+  font-weight: 600;
+}
+.item-charge-type{
+  font-size: 28rpx;
+  line-height: 1.0;
+  font-weight: 600;
+}
+.item-address{
+  font-size: 26rpx;
+  color: #D5D5D6;
+  font-weight: 600;
+  line-height: 1.0;
+  margin-bottom: 16rpx;
+}
+.item-bottom{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.item-info{
+  width: 480rpx;
+  font-size: 28rpx;
+  color: #12CF85;
+  font-weight: 600;
+}
+.nav-btn{
+  width: 126rpx;
+  height: 72rpx;
+  background-color: #2657EB;
+  text-align: center;
+  color: #fff;
+  line-height: 72rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius: 40rpx;
+}
+
+/* 缴费 */
+.car-order-list{
+  padding: 24rpx 40rpx;
+}
+.car-order-item{
+  box-sizing: border-box;
+  height: 276rpx;
+  padding: 40rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+  box-shadow: 0 20rpx 30rpx 0 rgba(0,0,0,0.03);
+}
+/* .order-item-left{
+  display: inline-flex;
+  flex-direction: column;
+} */
+.order-car-number{
+  display: inline-block;
+  box-sizing: border-box;
+  height: 60rpx;
+  border-radius: 2rpx;
+  text-align: center;
+  padding: 6rpx;
+  margin-bottom: 40rpx;
+}
+.car-number-normal{
+  background: linear-gradient(360deg,rgba(1,111,224,1) 0%,rgba(7,127,255,1) 100%);
+}
+.car-number-new-energy{
+  background: linear-gradient(360deg,rgba(149,245,162,1) 0%,rgba(245,254,247,1) 100%);
+}
+.car-number{
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 2rpx;
+  font-size: 32rpx;
+  line-height: 48rpx;
+  padding: 0 14rpx;
+  font-weight: 600;
+}
+.car-number-normal-border{
+  border: 0.5px solid #7BBBFF;
+  color: #fff;
+}
+.car-number-new-energy-border{
+  border: 0.5x solid #45574B;
+  color: #2F2F33;
+}
+.parking-duration{
+  height: 52rpx;
+  line-height: 52rpx;
+  margin-bottom: 16rpx;
+}
+/* 超过一天 */
+.time-duration{
+  font-size: 34rpx;
+  color: #2F2F33;
+  font-weight: 600;
+}
+
+/* .time-duration{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 52rpx;
+  font-weight: bold;
+}
+.hours-minutes{
+  color:#2F2F33
+}
+.colon,
+.seconds {
+  color: #BEC2CC;
+} */
+
+
+.parking-status{
+  font-size: 28rpx;
+  color: #9DADBD;
+}
+.order-item-right{
+  width: 170rpx;
+  height: 170rpx;
+}
+.order-item-right image{
+  width: 100%;
+  height: 100%;
+}
+.refresh{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 26rpx;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #9DADBD;
+}
+.refresh image{
+  width: 22rpx;
+  height: 22rpx;
+  margin-right: 8rpx;
+}
+
+.refresh text{
+  line-height: 1.0;
+}
+
+.personal-entre{
+  position: fixed;
+  z-index: 100;
+  width: 126rpx;
+  height: 126rpx;
+  right: 40rpx;
+  bottom: 60rpx;
+  box-shadow:0 14rpx 30rpx 0 rgba(0,0,0,0.15);
+  border-radius: 50%;
+}
+.personal-entre image{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* 添加车牌 */
+.no-plate{
+  position: relative;
+  width: 100%;
+}
+.button-wrapper{
+  position: absolute;
+  width: 100%;
+  height: 100rpx;
+  text-align: center;
+  bottom: -352rpx;
+}
+.add-phone{
+  width: 324rpx;
+  height: 100rpx;
+  background-color: #2657EB;
+  color: #fff;
+  line-height: 100rpx;
+  font-size: 32rpx;
+  border-radius: 50rpx;
+}

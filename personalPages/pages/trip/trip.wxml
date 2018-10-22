@@ -1,0 +1,31 @@
+<view class='container'>
+  <view wx:if='{{trips.length}}' class='trips-list'>
+    <view class='trip-item' wx:for='{{trips}}' wx:key='{{item.car_number}}'>
+      <view class='trip-item-title'>
+        <view class='trip-item-name'>{{item.park_name}}</view>
+        <view class='trip-item-plate'>{{item.carNumber}}</view>
+      </view>
+      <view class='trip-item-info'>
+        <view class='timing'>
+          <view class='trip-item-time'>
+            <image src='/resource/icon/in-time.png'></image>
+            <view class='time-y'>{{item.in_time_y}}</view>
+            <view class='time-d'>{{item.in_time_d}}</view>
+          </view>
+          <view class='trip-item-time'>
+            <image src='/resource/icon/out-time.png'></image>
+            <view class='time-y'>{{item.out_time_y}}</view>
+            <view class='time-d'>{{item.out_time_d}}</view>
+          </view>
+          <view class='left-dashed'></view>
+        </view>
+        <view class='trip-item-amount'>
+          ￥<text>{{item.amount_real}}</text>
+        </view>
+      </view>
+    </view>
+    <no-more wx:if='{{noMore}}'></no-more>
+  </view>
+
+  <no-data wx:else noData='{{noData}}'></no-data>
+</view>

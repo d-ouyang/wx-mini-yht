@@ -1,0 +1,18 @@
+.no-data{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  top: 170rpx;
+  align-items: center;
+  margin-bottom: 370rpx;
+}
+.no-data image{
+  width: 376rpx;
+  height: 320rpx;
+  margin-bottom: 32rpx;
+}
+.no-data text{
+  font-size: 32rpx;
+  color: #ccc;
+  font-weight: 400;
+}

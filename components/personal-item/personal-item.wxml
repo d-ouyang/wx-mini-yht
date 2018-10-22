@@ -1,0 +1,8 @@
+<!--components/personal-item.wxml-->
+<view class='container'>
+  <view class='left-wrapper'>
+    <image class='icon' src='{{ icon }}'></image>
+    <text class='title'>{{ title }}</text>
+  </view>
+  <image class='next' src='/resource/icon/next.png'></image>
+</view>

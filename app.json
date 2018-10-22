@@ -1,0 +1,51 @@
+{
+  "pages": [
+    "pages/loading/loading",
+    "pages/android/index/index",
+    "pages/android/personal/personal",
+    "pages/index/index/index",
+    "pages/personal/index/index",
+    "pages/common/addLicense/addLicense",
+    "pages/index/orderOver/orderOver",
+    "pages/index/order/order",
+    "pages/index/search/search",
+    "pages/test/test"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "优会停",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#CCCCCC",
+    "selectedColor": "#2F2F33",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index/index",
+        "text": "缴费",
+        "iconPath": "resource/icon/home.png",
+        "selectedIconPath": "resource/icon/home-active.png"
+      },
+      {
+        "pagePath": "pages/personal/index/index",
+        "text": "我的",
+        "iconPath": "resource/icon/personal.png",
+        "selectedIconPath": "resource/icon/personal-active.png"
+      }
+    ]
+  },
+  "subPackages": [
+    {
+      "root": "personalPages",
+      "pages": [
+        "pages/trip/trip",
+        "pages/licensePlate/licensePlate"
+      ]
+    }
+  ],
+  "networkTimeout": {
+    "request": 60000
+  }
+}

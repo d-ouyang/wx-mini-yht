@@ -1,0 +1,58 @@
+.coupon-item{
+  box-sizing: border-box;
+  border-bottom: 0.5px solid #ECECEC;
+  padding: 24rpx 40rpx 24rpx 74rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14rpx 0;
+  background-color: #fff;
+}
+.coupon-item image{
+  width: 48rpx;
+  height: 48rpx;
+}
+.coupon-item-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.coupon-item-amount-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 102rpx;
+  margin-right: 74rpx;
+}
+.coupon-item-amount{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  line-height: 1.0;
+  color: #FF0C29;
+}
+.coupon-item-amount text{
+  line-height: 1.0;
+}
+.rmb-label{
+  font-size: 30rpx;
+  margin-top: 6rpx;
+}
+.rmb-number{
+  font-family: 'DIN';
+  font-size: 60rpx;
+}
+.coupon-item-info-detail{
+  line-height: 1.0;
+}
+.coupon-item-type{
+  font-size: 30rpx;
+  color: #2F2F33;
+  font-weight: bold;
+  margin-bottom: 12rpx;
+}
+.coupon-item-duration{
+  font-size: 20rpx;
+  color: #9DADBD;
+}

@@ -1,0 +1,6 @@
+.no-more{
+  font-size: 26rpx;
+  color: #79808A;
+  text-align: center;
+  line-height: 96rpx;
+}

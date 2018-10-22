@@ -1,0 +1,4 @@
+<view class='check-box'>
+  <image wx:if='{{isChecked}}' src='/resource/icon/checked.png'></image>
+  <image wx:else src='/resource/icon/unchecked.png'></image>
+</view>

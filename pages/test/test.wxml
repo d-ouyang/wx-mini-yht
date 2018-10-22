@@ -1,0 +1,5 @@
+<view>
+  <!-- <view wx:for='{{fontWeight}}' wx:key='*this' style='font-family:"PingFangSC";font-weight:{{item}}'>字重为：{{item}}</view>
+  <view wx:for='{{fontFamily}}' wx:key='*this' style='font-family:{{item}}'>字体为：{{item}}</view> -->
+  <view wx:for='{{lineWidth}}' wx:key='*this' style='border-top:{{item}} solid #888;margin-bottom:40rpx;'>border-width:{{item}}</view>
+</view>

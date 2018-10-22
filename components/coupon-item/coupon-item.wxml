@@ -1,0 +1,20 @@
+<view class='coupon-item'>
+  <view class='coupon-item-info'>
+    <view class='coupon-item-amount-box'>
+      <view class='coupon-item-amount' style='color:{{coupon.isOverdue ? "#eee" : ""}}'>
+        <text class='rmb-label'>￥</text>
+        <text class='rmb-number'>{{coupon.amount}}</text>
+      </view>
+      <view></view>
+    </view>
+    <view class='coupon-item-info-detail'>
+      <view class='coupon-item-type' style='color:{{coupon.isOverdue ? "#ccc" : ""}}'>{{coupon.type}}</view>
+      <view class='coupon-item-duration' style='color:{{coupon.isOverdue ? "#ccc" : ""}}'>{{coupon.startTime}}至{{coupon.endTime}}</view>
+    </view>
+  </view>
+
+  <block wx:if='{{coupon.hasCheck}}'>
+    <check isChecked='{{coupon.isChecked}}'></check>
+  </block>
+  <view wx:else></view>
+</view>
