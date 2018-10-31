@@ -110,7 +110,7 @@ class WeChat {
         },
         fail: reject
       }
-      console.log("请求的URL", options.url);
+      // console.log("请求的URL", options.url);
       wx.request(options);
     })
   }

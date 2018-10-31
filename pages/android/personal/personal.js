@@ -12,11 +12,6 @@ let commonErrMsg = utils.commonErrMsg;
 
 let wechat = require('../../../utils/WeChat.js');
 
-const defaultInfo = {
-  nickName: '优会停用户',
-  avatarUrl: '../../../resource/icon/default-user-avatar.png'
-}
-
 Page({
   /**
    * 页面的初始数据
@@ -49,39 +44,33 @@ Page({
       //   router: 'invoice'
       // }
     ],
-    userInfo: defaultInfo,
-    hasUserInfo: false,
-    hasPhone: false
+    hasPhone: false,
+    locked: true,
+    logining: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    wechat.getStorage('loginInfo')
-      .then(res => {
-        if (res.hasPhone) {
-          this.setData({
-            hasPhone: res.hasPhone
-          })
-          wechat.getUserInfo()
-            .then(res => {
-              this.setData({
-                userInfo: res.userInfo,
-                hasUserInfo: true
-              })
-            })
-        } else {
-          this.setData({
-            hasPhone: false
-          })
-        }
-      }, res => {
+    wechat.getStorage('loginInfo').then(res => {
+      if (res.hasPhone) {
         this.setData({
-          hasPhone: false
+          hasPhone: true,
+          locked: false
         })
+      } else {
+        this.setData({
+          hasPhone: false,
+          locked: false
+        })
+      }
+    }, res => {
+      this.setData({
+        hasPhone: false,
+        locked: false
       })
+    })
   },
 
   /**
@@ -99,28 +88,41 @@ Page({
   },
 
   /**
-   * 获取用户信息
-   */
-  bindgetuserinfo: function (e) {
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  },
-
-  /**
    * 前往个人中心子页面
    */
   bindFunctionItem: function (e) {
-    wechat.getStorage('loginInfo').then(res => {
-      if (res.hasPhone) {
-        let $router = e.currentTarget.dataset.router;
-        wx.navigateTo({
-          url: `/personalPages/pages/${$router}/${$router}`
-        })
-      } else {
-        showToast('请先绑定手机号');
-      }
+    console.log(this.data.locked);
+    console.log(this.data.hasPhone);
+    if (this.data.locked) {
+      return
+    }
+    if (this.data.hasPhone) {
+      let $router = e.currentTarget.dataset.router;
+      wx.navigateTo({
+        url: `/personalPages/pages/${$router}/${$router}`
+      })
+    } else {
+      console.log(this.data.logining);
+      this.setData({
+        logining: true
+      })
+    }
+  },
+
+  /**
+   * 监听子组件事件
+   */
+  onHideLogin: function (e) {
+    let hasPhone = e.detail.hasPhone;
+    this.setData({
+      hasPhone,
+      logining: false
     })
   },
+
+  onHide: function () {
+    this.setData({
+      logining: false
+    })
+  }
 })

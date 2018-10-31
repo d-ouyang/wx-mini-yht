@@ -229,10 +229,9 @@
   margin-bottom: 24rpx;
   box-shadow: 0 20rpx 30rpx 0 rgba(0,0,0,0.03);
 }
-/* .order-item-left{
-  display: inline-flex;
-  flex-direction: column;
-} */
+.order-item-left{
+  width: 420rpx;
+}
 .order-car-number{
   display: inline-block;
   box-sizing: border-box;
@@ -296,6 +295,7 @@
 
 
 .parking-status{
+  /* width:  */
   font-size: 28rpx;
   color: #9DADBD;
 }

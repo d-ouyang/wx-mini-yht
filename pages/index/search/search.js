@@ -59,7 +59,6 @@ Page({
     })
     demo.getSuggestion({
       keyword: e.detail.value,
-      region: '上海市',
       region_fix: 1,
       success: (res) => {
         this._calculateDistance(res.data);
@@ -107,7 +106,6 @@ Page({
     } else {
       demo.getSuggestion({
         keyword: e.detail.value,
-        // region: '上海市',
         success: (res) => {
           if (!res.data.length) {
             wx.showToast({
@@ -173,6 +171,12 @@ Page({
     let historyData = this.data.historyData;
     console.log(data)
     for (let i in data) {
+      if (data[i].address == '') {
+        data[i].address = data[i].title
+      } else {
+        data[i].address = data[i].address.replace(data[i].city + data[i].district, '')
+      }
+
       if (!data[i].city || data[i].city == '') {
         data[i].city == ''
       } else{
@@ -183,11 +187,8 @@ Page({
       } else {
         data[i].district += '-'
       }
-      if (data[i].address == '') {
-        data[i].address = data[i].title
-      }
 
-      data[i].address = data[i].city + data[i].district + data[i].address.replace(data[i].city + data[i].district, '');
+      data[i].address = data[i].city + data[i].district + data[i].address;
       data[i].distance = distanceArr[i];
       for (let j in historyData) {
         if (data[i].id == historyData[j].id) {

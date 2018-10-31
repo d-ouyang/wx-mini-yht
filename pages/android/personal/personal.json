@@ -3,5 +3,8 @@
   "navigationBarTextStyle": "white",
   "backgroundColor": "#F4F6FA",
   "backgroundColorTop": "#077FFF",
-  "backgroundColorBottom": "#F4F6FA"
+  "backgroundColorBottom": "#F4F6FA",
+  "usingComponents": {
+    "login": "/components/login/login"
+  }
 }

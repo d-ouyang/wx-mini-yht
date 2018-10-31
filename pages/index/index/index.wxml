@@ -13,11 +13,7 @@
     <!-- 添加车牌 button -->
     <cover-view class='button-wrapper' wx:if='{{needAddLicense}}'>
       <cover-image class='shadow-image' src='/resource/image/shadow.png'></cover-image>
-      <button wx:if='{{!hasPhone}}' class='add-phone' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>
-        + 添加车牌
-      </button>
-
-      <button wx:if='{{hasPhone}}' bindtap='addLicense' class="add-phone">
+      <button bindtap='addLicense' class="add-phone">
         + 添加车牌
       </button>
     </cover-view>
@@ -87,7 +83,7 @@
     </cover-view>
 
     <!-- 停车场详情 -->
-    <cover-view wx:if='{{parkingShow}}' style='transform:translateY({{productTranslateY}}rpx);height:{{parkingInfoHeight}}rpx' class='map-bottom bottom-0 {{isParkingOpacity ? "opacity-0" : ""}}'>
+    <cover-view style='transform:translateY({{productTranslateY}}rpx);height:{{parkingInfoHeight}}rpx' class='map-bottom bottom-0 {{isParkingOpacity ? "opacity-0" : ""}}'>
       <cover-image bindtap='switchBottomBox' class='map-bottom-top' src='../../../resource/image/map-bottom-top-park.png'></cover-image>
       <cover-view class='map-bottom-header' style='height:176rpx;'>
         <cover-view class='map-bottom-header-left'>

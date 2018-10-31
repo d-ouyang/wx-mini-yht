@@ -58,23 +58,16 @@
   <view wx:else class='modal payment-modal'>
     <view class='modal-box box-sizing'>
       <view wx:if='{{!needAddLicense && hasOrder}}' class='car-order-list box-sizing'>
-        <view class='car-order-item' wx:for='{{carList}}' wx:key='{{item.car_number}}' wx:if='{{item.hasOrder}}'>
+        <view class='car-order-item' wx:for='{{carList}}' wx:key='{{item.car_number}}' wx:if='{{carList.length}}'>
           <view class='order-item-left'>
             <view class='order-car-number {{item.isNewEnergy ? "car-number-new-energy" : "car-number-normal"}}'>
               <view class='car-number {{item.isNewEnergy ? "car-number-new-energy-border" : "car-number-normal-border"}}'>{{item.carNumber}}</view>
             </view>
-            <view class='parking-duration'>
+            <view class='parking-duration no-wrap'>
               <view wx:if='{{item.status}}' class='time-duration'>{{item.duration}}</view>
               <view wx:else class='time-duration'>{{item.duration}}</view>
-              <!-- <view class='time-duration'>
-                <view class='hours-minutes'>00</view>
-                <view class='colon'>:</view>
-                <view class='hours-minutes'>00</view>
-                <view class='colon'>:</view>
-                <view class='seconds'>00</view>
-              </view> -->
             </view>
-            <view class='parking-status'>{{item.status ? "停车中" : "离场中"}} | {{item.parkName}}</view>
+            <view class='parking-status no-wrap'>{{item.status ? "停车中" : "离场中"}} | {{item.parkName}}</view>
           </view>
           <view bindtap='bindpay' data-wxsp='{{item.wxsp}}' data-need-pay='{{item.needPay}}' data-info='{{item}}' class='order-item-right'>
             <image wx:if='{{item.needPay && item.wxsp}}' src='/resource/image/go-to-payment.png'></image>
@@ -90,11 +83,7 @@
       <block wx:if='{{needAddLicense}}' class='no-plate'>
         <no-data noData='{{plateNoData}}'></no-data>
         <view class='button-wrapper'>
-          <button wx:if='{{!hasPhone}}' class='add-phone' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>
-            + 添加车牌
-          </button>
-
-          <button wx:if='{{hasPhone}}' bindtap='addLicense' class="add-phone">
+          <button bindtap='addLicense' class="add-phone">
             + 添加车牌
           </button>
         </view>

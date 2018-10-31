@@ -74,7 +74,7 @@ Page({
     freeTime:'',
     currentCarPlate: {},// 默认当前选中车牌为空
     firstLoading: true, // 默认第一次加载获取当前位置拿停车场数据
-    firstCheckCarPlate: true, // 默认第一次查车牌
+    // firstCheckCarPlate: true, // 默认第一次查车牌
     destinationValue: '你想停在哪里？',
     isDestination: false,
     hasPay: false, // 默认没有要支付的订单
@@ -89,7 +89,7 @@ Page({
     hasProduct: false, // 默认没有产品
     needAddLicense: false, // 是否需要添加车牌 也控制车牌的显示隐藏
     carListBox: false, // 默认隐藏车牌列表
-    parkingShow: false, // 停车场默认隐藏
+    carList: [],
     isPlateOpacity: true, // 默认透明
     isParkingOpacity: true, //默认透明
     payInfoHeight: noPayInfoHeight,
@@ -102,89 +102,80 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    wechat.getStorage('loginInfo').then(res => {
-      this.setData({
-        hasPhone: res.hasPhone
-      })
-      this.handleUserInfo(res.hasPhone);
-    })
+    
   },
 
   /**
-   * hasPhone 处理 是否查询车牌
+   * 车牌元素过滤器
    */
-  handleUserInfo: function(bool) {
-    if (bool) { // 如果绑定了手机就去查车牌
-      wechat.request(carlistUrl)
-        .then(res => {
-          this.setData({
-            firstLoading: false
-          })
-          this.handleCarlist(res)
-        })
-    } else { // 没有绑定手机号就显示绑定车牌
-      this.setData({
-        needAddLicense: true
-      })
+  filterCarplate: function(item){
+    item.carNumber = utils.handleCarPlate(item.car_number);
+    if (item.is_newEnergyVehicle == '0') {
+      item.isNewEnergy = false;
+    } else if (item.is_newEnergyVehicle == '1') {
+      item.isNewEnergy = true;
     }
+    return item
   },
 
   /**
    * 处理车牌列表
    */
   handleCarlist: function(data) {
-    var currentCarPlate = this.data.currentCarPlate;
-    var list = data.dataList;
-    var len = list.length;
-    if (!len) {
+    let list = data.dataList;
+    if (!list.length) {
       showToast('未查到您的车牌记录');
       this.setData({
-        needAddLicense: true
+        needAddLicense: true,
+        carList: list
       })
       return;
-    } else {
-      for (let i in list) {
-        list[i].carNumber = utils.handleCarPlate(list[i].car_number)
-        if (list[i].is_newEnergyVehicle == '0') {
-          list[i].isNewEnergy = false;
-        } else if (list[i].is_newEnergyVehicle == '1') {
-          list[i].isNewEnergy = true;
-        }
-      }
+    }
 
+    let currentCarPlate = this.data.currentCarPlate;
+    
+    for (let i in list) {
+      list[i] = this.filterCarplate(list[i]);
+    }
+
+    this.setData({
+      needAddLicense: false
+    },() => {
+      // this.switchBottomBox()
+      setTimeout(() => {
+        this.setData({
+          carList: list
+        })
+      },300)
+    })
+
+    if (utils.objIsNull(currentCarPlate)) { // 第一次
+      currentCarPlate = list[0];
       this.setData({
-        needAddLicense: false,
-        carList: list,
-        isPlateOpacity: false
-      })
-
-      if (utils.objIsNull(currentCarPlate)) { // 第一次
-        currentCarPlate = list[0];
+        currentCarPlate
+      },() => {
         this.checkPayOrder(currentCarPlate);
-      } else { // 第二次
-        wechat.getStorage('onStatusChange')
-          .then( res => {
-            if (res.status && currentCarPlate.car_number == res.carNumber) {
-              currentCarPlate = list[0];
-              // if (currentCarPlate.car_number == res.carNumber) {
-              //   currentCarPlate = list[0];
-              // } else {
-              //   currentCarPlate = this.data.currentCarPlate;
-              // }
-              wechat.setStorage('onStatusChange', {
-                status: false,
-                carNumber: ''
-              });
-            } else {
-              currentCarPlate = this.data.currentCarPlate;
-            }
-            this.checkPayOrder(currentCarPlate)
+      })
+    } else { // 第二次
+      wechat.getStorage('onStatusChange').then( res => {
+        if (res.status && currentCarPlate.car_number == res.carNumber) {
+          currentCarPlate = list[0];
+          wechat.setStorage('onStatusChange', {
+            status: false,
+            carNumber: ''
+          });
+          this.setData({
+            currentCarPlate
+          }, () => {
+            this.checkPayOrder(currentCarPlate);
           })
-          .catch( res => {
-            currentCarPlate = this.data.currentCarPlate;
-            this.checkPayOrder(currentCarPlate)
-          })
-      }
+        } else {
+          this.checkPayOrder(currentCarPlate)
+        }
+      })
+      .catch( res => {
+        this.checkPayOrder(currentCarPlate)
+      })
     }
   },
 
@@ -194,30 +185,38 @@ Page({
   onReady: function() {
     // 使用 wx.createMapContext 获取 map 上下文
     this.mapCtx = wx.createMapContext('map');
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    if(this.data.hasPhone){
-      wechat.request(carlistUrl)
-        .then(res => {
-          this.handleCarlist(res)
+    if (this.data.hasPhone) {
+      wechat.request(carlistUrl).then( res => {
+        this.handleCarlist(res);
+      })
+    } else {
+      wechat.getStorage('loginInfo').then(res => {
+        this.setData({
+          hasPhone: res.hasPhone
         })
+        if (res.hasPhone){
+          wechat.request(carlistUrl).then(res => {
+            this.handleCarlist(res);
+          })
+        } else {
+          this.setData({
+            needAddLicense: true
+          })
+        }
+      })
     }
-    let pages = getCurrentPages();
-    let currPage = pages[pages.length - 1];
-    let data = currPage.data;
-    // 初始化当前位置函数
 
-    if (!data.state) {
-      this.bindLocation()
-      return;
+    if (!this.data.state) {
+      this.getCurrentPosition();
     } else {
       let markers = this.data.markers;
-      let destinationData = data.destinationData;
+      let destinationData = this.data.destinationData;
       let destinationLat = destinationData.location.lat;
       let destinationLng = destinationData.location.lng;
       let currentLat = this.data.currentLat;
@@ -253,19 +252,6 @@ Page({
   },
 
   /**
-   * initFn 初始化函数 判断用户是否授权获取当前地理位置权限
-   */
-  bindLocation: function() {
-    this.setData({
-      state: 0,
-      destinationValue: '你想停在哪里？',
-      isDestination: false
-    }, () => {
-      this.initFn();
-    })
-  },
-
-  /**
    * 获取用户当前位置
    */
   getCurrentPosition: function () {
@@ -273,69 +259,6 @@ Page({
       this.setMapCenter(res.latitude, res.longitude);
       this.getNearbyParking(res.latitude, res.longitude);
     })
-  },
-
-  initFn: function() {
-    this.getCurrentPosition();
-    if (!this.data.firstLoading) {
-      let carListBox = this.data.carListBox;
-      let needAddLicense = this.data.needAddLicense;
-
-      if (needAddLicense) {
-        return;
-      } else {
-        let plateTranslateY = carListHeight;
-        this.setData({
-          isPlateOpacity: false,
-          plateTranslateY: plateTranslateY
-        })
-        if (carListBox) {
-          carListBox = false;
-        }
-        setTimeout(res => {
-          this.setData({
-            carListBox: carListBox
-          })
-        }, 500)
-      }
-    }
-  },
-
-  /**
-   * 获取用户手机号
-   */
-  getPhoneNumber: function(e) {
-    if (e.detail.encryptedData) {
-      const encryptedData = e.detail.encryptedData;
-      const iv = e.detail.iv;
-
-      wechat.getStorage('loginInfo')
-        .then(res => {
-          let token = res.token;
-          return wechat.request(getPhoneUrl, {
-            encryptedData: encryptedData,
-            iv: iv
-          })
-        })
-        .then(res => {
-          wechat.getStorage('loginInfo')
-            .then(data => {
-              let loginInfo = data;
-              if (res.newToken) {
-                loginInfo.token = res.newToken;
-              }
-              loginInfo.hasPhone = true;
-              loginInfo.phone = res.phone;
-              return wechat.setStorage('loginInfo', loginInfo)
-            })
-            .then(res => {
-              this.setData({
-                hasPhone: true
-              })
-              this.handleUserInfo(true);
-            })
-        })
-    }
   },
 
   /**
@@ -371,13 +294,20 @@ Page({
     let selectCarPlate = e.currentTarget.dataset.item;
     let selectCarNumber = selectCarPlate.car_number;
     let currentCarPlate = this.data.currentCarPlate;
+    console.log(selectCarPlate);
     if (selectCarNumber == currentCarPlate.car_number) {
       return;
     } else {
       this.setData({
         plateTranslateY: hasOrderHeight
+      },() => {
+        setTimeout(() => {
+          this.setData({
+            currentCarPlate: selectCarPlate
+          })
+        }, 300)
+        this.checkPayOrder(selectCarPlate);
       })
-      this.checkPayOrder(selectCarPlate);
     }
   },
 
@@ -390,56 +320,36 @@ Page({
       carType: o.car_type
     }
     utils.loading();
-    wechat.request(carOrderUrl, options)
-      .then(res => {
-        let carListBox = this.data.carListBox;
-        if (carListBox) {
-          carListBox = false
-        }
-        var plateTranslateY = carListHeight
-
-        if (!res) { // 说明不存在订单
-          this.setData({
-            currentCarPlate: o,
-            hasPay: false,
-            firstCheckCarPlate: false,
-            plateInfoHeight: noOrderHeight,
-            payInfoHeight: noPayInfoHeight,
-            carListBox: carListBox
-          })
-          setTimeout(res => {
+    wechat.request(carOrderUrl, options).then(res => {
+      if (!res) { // 说明不存在订单
+        this.setData({
+          hasPay: false,
+          plateInfoHeight: noOrderHeight,
+          payInfoHeight: noPayInfoHeight
+        })
+        setTimeout(() => {
+          this.switchBottomBox();
+          wx.hideLoading();
+        },300)
+      } else { // 存在订单
+        let orderInfo = {}
+        orderInfo.parkName = res.orderInfo.parkName;
+        orderInfo.freeMinute = res.orderInfo.freeMinute;
+        if (res.orderPay.realAmt <= 0) { // 无费用
+          if (res.wechatFlag == 0 || res.wechatFlag == -1) {// 不支持
             this.setData({
-              plateTranslateY: plateTranslateY
-            },() => {
-              wx.hideLoading();
+              needPay: false,
+              wxsp: false
             })
-          },400)
-        } else { // 存在订单
-          let orderInfo = {}
-          orderInfo.parkName = res.orderInfo.parkName;
-          orderInfo.freeMinute = res.orderInfo.freeMinute;
-          if (res.orderPay.realAmt <= 0) { // 无费用
-            if (res.wechatFlag == 0 || res.wechatFlag == -1) {// 不支持
-              this.setData({
-                needPay: false,
-                wxsp: false
-              })
-            } else if (res.wechatFlag == 1){ // 支持
-              this.setData({
-                needPay: false,
-                wxsp: true
-              })
-            }
-            if (res.payList.length) {
-              if (res.orderInfo.minute <= res.orderInfo.freeMinute) {
-                this.countDown(res);
-              } else {
-                this.setData({
-                  freeTimeStatus: false,
-                  freeTime: ''
-                })
-                this.commonCost(res);
-              }
+          } else if (res.wechatFlag == 1){ // 支持
+            this.setData({
+              needPay: false,
+              wxsp: true
+            })
+          }
+          if (res.payList.length) {
+            if (res.orderInfo.minute <= res.orderInfo.freeMinute) {
+              this.countDown(res);
             } else {
               this.setData({
                 freeTimeStatus: false,
@@ -448,41 +358,42 @@ Page({
               this.commonCost(res);
             }
           } else {
-            // 产生费用
-            if (res.wechatFlag == 0 || res.wechatFlag == -1) {// 不支持
-              this.setData({
-                needPay: false,
-                wxsp: false
-              })
-            } else if (res.wechatFlag == 1) { // 支持
-              this.setData({
-                needPay: false,
-                wxsp: true
-              })
-            }
             this.setData({
-              needPay: true,
               freeTimeStatus: false,
               freeTime: ''
             })
             this.commonCost(res);
           }
-          this.setData({
-            currentCarPlate: o,
-            orderInfo: orderInfo,
-            hasPay: true,
-            payInfoHeight: hasPayInfoHeight,
-            firstCheckCarPlate: false,
-            plateInfoHeight: hasOrderHeight,
-            carListBox: carListBox
-          })
-          setTimeout(res => {
+        } else {
+          // 产生费用
+          if (res.wechatFlag == 0 || res.wechatFlag == -1) {// 不支持
             this.setData({
-              plateTranslateY: plateTranslateY
+              needPay: false,
+              wxsp: false
             })
-          },400)
+          } else if (res.wechatFlag == 1) { // 支持
+            this.setData({
+              needPay: false,
+              wxsp: true
+            })
+          }
+          this.setData({
+            needPay: true,
+            freeTimeStatus: false,
+            freeTime: ''
+          })
+          this.commonCost(res);
         }
-      })
+        this.setData({
+          orderInfo: orderInfo,
+          hasPay: true,
+          payInfoHeight: hasPayInfoHeight,
+          plateInfoHeight: hasOrderHeight
+        },() => {
+          this.switchBottomBox()
+        })
+      }
+    })
   },
 
   /**
@@ -632,20 +543,19 @@ Page({
       longitude: lng
     }
     utils.loading();
-    wechat.request(parklistUrl, requestData)
-      .then(res => {
+    wechat.request(parklistUrl, requestData).then(res => {
+      wx.hideLoading();
+      if (!res.parkList.length) {
+        showToast('附近暂无停车场');
+      }
+      this.handleMarkers(res, lat, lng)
+    })
+    .catch(res => {
+      if (res.errMsg.indexOf('timeout') > -1) {
         wx.hideLoading();
-        if (!res.parkList.length) {
-          showToast('附近暂无停车场');
-        }
-        this.handleMarkers(res, lat, lng)
-      })
-      .catch(res => {
-        if (res.errMsg.indexOf('timeout') > -1) {
-          wx.hideLoading();
-          showToast('请求超时');
-        }
-      })
+        showToast('请求超时');
+      }
+    })
   },
 
   /**
@@ -706,11 +616,10 @@ Page({
     markers.push(destination_marker);
     this.setData({
       markers: markers
-    })
-    wx.hideLoading();
-    if (!this.data.isParkingOpacity) {
+    },() => {
       this.switchBottomBox();
-    }
+      wx.hideLoading();
+    })
   },
 
   /**
@@ -759,7 +668,7 @@ Page({
 
     markers = this.resetAllMarkers(markers);
 
-    var active_id = markers.length - 2;
+    let active_id = markers.length - 2;
 
     markers[active_id].click = true;
     markers[active_id].iconPath = active_icon_path;
@@ -773,22 +682,17 @@ Page({
       if (content.indexOf('H') > -1) { // 按小时
         content = content.slice(0, 2) + '\n每小时';
         markers[active_id].label.anchorX = active_hour_anchorX;
-        // markers[active_id].iconPath = active_hour_icon_path;
       } else { // 按次
         content = content.slice(0, 2) + '\n每次';
         markers[active_id].label.anchorX = active_time_anchorX;
-        // markers[active_id].iconPath = active_time_icon_path;
       }
     } else if (content.length == 5) { // 双位数
-      // markers[active_id].label.anchorX = active_two_anchorX;
       if (content.indexOf('H') > -1) { // 按小时
         content = content.slice(0, 3) + '\n每小时';
         markers[active_id].label.anchorX = active_hour_anchorX;
-        // markers[active_id].iconPath = active_hour_icon_path;
       } else { // 按次
         content = content.slice(0, 3) + '\n每次';
         markers[active_id].label.anchorX = active_time_anchorX;
-        // markers[active_id].iconPath = active_time_icon_path;
       }
     }
 
@@ -836,8 +740,7 @@ Page({
     navInfo.address = data.addr;
     data.navInfo = navInfo;
     this.setData({
-      parkingInfo: data,
-      parkingShow: true
+      parkingInfo: data
     })
 
     if (!this.data.isPlateOpacity) {
@@ -872,28 +775,23 @@ Page({
   },
 
   /**
+   * 当前定位
+   */
+  bindLocation: function(){
+    this.setData({
+      state: 0,
+      destinationValue: '你想停在哪里？',
+      isDestination: false
+    },() => {
+      this.getCurrentPosition()
+    })
+  },
+
+  /**
    * 点击地图
    */
   bindmaptap: function(e) {
-    let isParkingOpacity = this.data.isParkingOpacity;
-    let isPlateOpacity = this.data.isPlateOpacity;
-    let carListBox = this.data.carListBox;
-    if (!isPlateOpacity) { // 如果车牌显示
-      if (carListBox) { // 并且车排列表显示
-        this.setData({
-          plateTranslateY: carListHeight
-        })
-        setTimeout(res => {
-          this.setData({
-            carListBox: false
-          })
-        }, 300)
-      } else {
-        return;
-      }
-    } else if (!isParkingOpacity) { // 停车场信息显示
-      this.switchBottomBox()
-    }
+    this.switchBottomBox()
   },
 
   /**
@@ -958,32 +856,58 @@ Page({
    * bindtap = 'switchBottomBox'
    */
   switchBottomBox: function() {
-    let markers = this.resetAllMarkers(this.data.markers);
-    let carListBox = this.data.carListBox;
-    let needAddLicense = this.data.needAddLicense;
-
-    this.setData({
-      markers: markers,
-      productTranslateY: this.data.parkingInfoHeight,
-      isParkingOpacity: true
-    })
-
-    if (needAddLicense) {
-      return;
-    } else {
-      let plateTranslateY = carListHeight;
-      this.setData({
-        isPlateOpacity: false,
-        plateTranslateY: plateTranslateY
-      })
-      if (carListBox) {
-        carListBox = false;
+    let plateTranslateY = carListHeight
+    let carListBox = this.data.carListBox
+    if (!this.data.isParkingOpacity) { // 停车场信息显示
+      let markers = this.data.markers;
+      if (!markers || !markers.length) {
+        return
       }
-      setTimeout(res => {
+      markers = this.resetAllMarkers(markers);
+      this.setData({
+        markers,
+        productTranslateY: parkInfoHeight,
+        isParkingOpacity: true
+      })
+      if (this.data.needAddLicense) {
+        return
+      }
+      if (carListBox) { // 表示是显示车牌列表的
+        carListBox = false
+      }
+      this.setData({
+        carListBox,
+        plateTranslateY,
+        isPlateOpacity: false
+      })
+    } else { // 停车场信息隐藏
+      if (this.data.needAddLicense) {
+        return
+      }
+      if (carListBox) {
+        carListBox = false
+      }
+      if (!this.data.isPlateOpacity) { // 车牌信息显示
         this.setData({
-          carListBox: carListBox
+          plateTranslateY
+        }, () => {
+          setTimeout(() => {
+            this.setData({
+              carListBox
+            })
+          }, 300)
         })
-      }, 500)
+      } else {
+        if (carListBox) {
+          carListBox = false
+        }
+        console.log('车牌信息隐藏')
+        this.setData({
+          carListBox,
+          plateTranslateY,
+          isPlateOpacity: false
+        })
+      }
     }
   },
 

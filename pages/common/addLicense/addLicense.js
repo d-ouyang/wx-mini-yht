@@ -31,14 +31,14 @@ Page({
     province_data: province_data,
     plate_number: plate_number,
     plate_letter: plate_letter,
-    province_show: true,
-    // province_bottom: true,
-    plate_show: false,
+    province_show: false,
+    plate_show: true,
     plate_bottom: false,
-    current_index: 0,
+    current_index: 1,
     plate_arr: plate_arr,
     is_new_energy: false,
-    last_page:'' 
+    last_page:'',
+    logining: false
   },
 
   /**
@@ -66,7 +66,25 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.judgePhone();
+  },
   
+  /**
+   * 判断是否有手机号
+   */
+  judgePhone: function() {
+    wechat.getStorage('loginInfo').then(res => {
+      console.log(res)
+      if (res.hasPhone) {
+        this.setData({
+          logining: false
+        })
+      } else {
+        this.setData({
+          logining: true
+        })
+      }
+    })
   },
 
   /**
@@ -139,6 +157,7 @@ Page({
    */
   bindPlateNumberItem: function(e){
     var current_index = this.data.current_index;
+    console.log(current_index);
     var plate_arr = this.data.plate_arr;
     var the_plate_number_index = e.currentTarget.dataset.index;
     var the_plate_number_value = plate_number[the_plate_number_index];
@@ -250,6 +269,26 @@ Page({
       is_new_energy: false
     }
     return index;
+  },
+
+  onHideLogin: function(e){
+    let hasPhone = e.detail.hasPhone;
+    const last_page = this.data.last_page;
+    this.setData({
+      logining: false
+    },() => {
+      if (hasPhone) {
+        return;
+      } else {
+        if (last_page == 'home') {
+          wx.switchTab({
+            url: '/pages/index/index/index'
+          })
+        } else {
+          wx.navigateBack()
+        }
+      }
+    })
   },
 
   /**

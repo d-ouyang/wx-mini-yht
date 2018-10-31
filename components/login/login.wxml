@@ -1,0 +1,10 @@
+<view wx:if='{{logining}}' class='login-container'>
+  <view class='login-box'>
+    <text class='title'>登录优会停</text>
+    <button open-type='getPhoneNumber' bindgetphonenumber='getphonenumber' class='login-btn'>
+      <image src='/resource/icon/icon-wechat.png'></image>
+      <text>微信账号快速登录</text>
+    </button>
+    <text bindtap='cancleLogin' class='unlogin'>暂不登录</text>
+  </view>
+</view>

@@ -23,6 +23,7 @@
   height: 160rpx;
   border: 6rpx solid #fff;
   border-radius: 50%;
+  overflow: hidden;
   margin-bottom: 20rpx;
 }
 .nickname{

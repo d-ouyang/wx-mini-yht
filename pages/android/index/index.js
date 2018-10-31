@@ -5,7 +5,6 @@ const ERROR_OK = globalData.ERROR_OK;
 const BASE_URL = globalData.requestBaseUrl;
 
 const RADIUS = '1000';
-const FREE = 15; //免费 15 分钟
 
 // 登录
 const loginUrl = BASE_URL + '/auth/wechatLogin';
@@ -68,54 +67,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wechat.checkSession().then(() => {
-      wechat.getStorage('loginInfo').then(res => {
-        this.setData({
-          hasPhone: res.hasPhone
-        })
-        this.handleUserInfo(res.hasPhone);
-      }).catch(res => {
-        wechat.login().then(res => {
-          return wechat.requestLogin(loginUrl, {
-            js_code: res.code
-          });
-        }).then(res => {
-          this.setData({
-            hasPhone: res.hasPhone
-          })
-          return wechat.setStorage('loginInfo', res)
-        }).then(() => {
-          this.handleUserInfo(this.data.hasPhone);
-        })
-      })
-      }, () => {
-        wechat.login().then(res => {
-          return wechat.requestLogin(loginUrl, {
-            js_code: res.code
-          });
-        }).then(res => {
-          this.setData({
-            hasPhone: res.hasPhone
-          })
-          return wechat.setStorage('loginInfo', res)
-        }).then(() => {
-          this.handleUserInfo(this.data.hasPhone);
-        })
-      })
+    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // 查车牌 不是初始化
-    if (!this.data.firstCheckCarPlate) {
-      if (this.data.hasPhone && !this.data.parkActive) {
-        utils.loading()
-        wechat.request(carlistUrl).then(res => {
-          this.handleCarlist(res)
+    if (this.data.hasPhone) {
+      wechat.request(carlistUrl).then(res => {
+        this.handleCarlist(res);
+      })
+    } else {
+      wechat.getStorage('loginInfo').then(res => {
+        this.setData({
+          hasPhone: res.hasPhone
         })
-      }
+        if (res.hasPhone) {
+          wechat.request(carlistUrl).then(res => {
+            this.handleCarlist(res);
+          })
+        } else {
+          this.setData({
+            needAddLicense: true
+          })
+        }
+      })
     }
 
     let pages = getCurrentPages();
@@ -124,7 +101,6 @@ Page({
 
     if (!data.state && data.parkActive) {
       this.getCurrentPosition();
-      return;
     } else if (data.state){
       let destinationData = data.destinationData;
       let destinationLat = destinationData.location.lat;
@@ -195,30 +171,24 @@ Page({
   },
 
   /**
-   * hasPhone 处理 是否查询车牌
+   * 车牌元素过滤器
    */
-  handleUserInfo: function (bool) {
-    if (bool == true) { // 如果绑定了手机就去查车牌
-      utils.loading();
-      wechat.request(carlistUrl)
-        .then(res => {
-          this.setData({
-            firstCheckCarPlate: false
-          }, this.handleCarlist(res))
-        })
-    } else { // 没有绑定手机号就显示绑定车牌
-      this.setData({
-        needAddLicense: true
-      })
+  filterCarplate: function (item) {
+    item.carNumber = utils.handleCarPlate(item.car_number);
+    if (item.is_newEnergyVehicle == '0') {
+      item.isNewEnergy = false;
+    } else if (item.is_newEnergyVehicle == '1') {
+      item.isNewEnergy = true;
     }
+    return item
   },
 
   /**
    * 处理车牌列表
    */
   handleCarlist: function (data) {
-    var list = data.dataList;
-    var len = list.length;
+    let list = data.dataList;
+    let len = list.length;
     if (!len) {
       this.setData({
         needAddLicense: true,
@@ -226,37 +196,32 @@ Page({
       }, () => {
         wx.hideLoading();
       })
-      return;
     } else {
-      wx.hideLoading();
       this.setData({
         needAddLicense: false
       })
+      let requestArr = [];
       for (let i in list) {
-        list[i].carNumber = utils.handleCarPlate(list[i].car_number)
-        if (list[i].is_newEnergyVehicle == '0') {
-          list[i].isNewEnergy = false;
-        } else if (list[i].is_newEnergyVehicle == '1') {
-          list[i].isNewEnergy = true;
-        }
-
+        list[i] = this.filterCarplate(list[i]);
         let options = {
           carNumber: list[i].car_number,
           carType: list[i].car_type
         }
-        utils.loading()
-        wechat.request(carOrderUrl, options).then(res => {
-          
-          if (!res) { // 无订单
+        let asyncTask = wechat.request(carOrderUrl, options);
+        requestArr.push(asyncTask);
+      }
+      Promise.all(requestArr).then(resultList => {
+        resultList.forEach((res, i) => {
+          if (!res) {
             list[i].hasOrder = false;
           } else {
             list[i].hasOrder = true;
-            list[i].duration = '需付费时长' + utils.handleParkTime(res.orderInfo.minute);
+            list[i].duration = utils.handleParkTime(res.orderInfo.minute);
             list[i].parkName = res.orderInfo.parkName;
             if (res.wechatFlag == 0 || res.wechatFlag == -1) { // 不支持
               list[i].needPay = false;
               list[i].wxsp = false;
-            } else if (res.wechatFlag == 1){ // 支持
+            } else if (res.wechatFlag == 1) { // 支持
               list[i].wxsp = true;
               if (res.orderPay.receivableAmt <= 0) {
                 list[i].needPay = false;
@@ -271,21 +236,31 @@ Page({
               list[i].duration = obj.duration;
             } else {
               list[i].status = true;
-              list[i].duration = '需付费时长' + utils.handleParkTime(res.orderInfo.minute);
+              list[i].duration = utils.handleParkTime(res.orderInfo.minute);
             }
-            this.setData({
-              hasOrder: true
-            })
           }
-          return i
-        }).then( res => {
-          this.setData({
-            carList: list
-          },() => {
-            wx.hideLoading();
-          })
         })
-      }
+        return list
+      }).then( res => {
+        let carList = [];
+        res.forEach((item, i) => {
+          if(res[i].hasOrder) {
+            carList.push(res[i])
+          }
+        })
+        if (carList.length) {
+          this.setData({
+            carList,
+            hasOrder: true
+          })
+        } else {
+          this.setData({
+            carList,
+            hasOrder: false
+          })
+        }
+        wx.hideLoading();
+      })
     }
   },
 
@@ -299,7 +274,7 @@ Page({
     let duration = '';
      
     if (diff >= free*60) {
-      duration = '需付费时长' + utils.handleParkTime(minute);
+      duration = utils.handleParkTime(minute);
       return {
         bool: true,
         duration: duration
@@ -418,15 +393,12 @@ Page({
       latitude: lat,
       longitude: lng
     }
-    utils.loading();
     wechat.request(parklistUrl, requestData)
       .then(res => {
-        wx.hideLoading();
         this.handleParkList(res.parkList, lat, lng)
       })
       .catch(res => {
         if (res.errMsg.indexOf('timeout') > -1) {
-          wx.hideLoading();
           showToast('请求超时');
         }
       })
@@ -473,36 +445,6 @@ Page({
   },
 
   /**
-   * 获取用户手机号
-   */
-  getPhoneNumber: function (e) {
-    if (e.detail.encryptedData) {
-      const encryptedData = e.detail.encryptedData;
-      const iv = e.detail.iv;
-      utils.loading();
-      wechat.request(getPhoneUrl, {
-        encryptedData: encryptedData,
-        iv: iv
-      }).then(res => {
-        wechat.getStorage('loginInfo').then(data => {
-          let loginInfo = data;
-          if (res.newToken) {
-            loginInfo.token = res.newToken;
-          }
-          loginInfo.hasPhone = true;
-          loginInfo.phone = res.phone;
-          return wechat.setStorage('loginInfo', loginInfo)
-        }).then(res => {
-          this.setData({
-            hasPhone: true
-          })
-          this.handleUserInfo(true);
-        })
-      })
-    }
-  },
-
-  /**
    * 导航
    */
   bindNavigate: function(e){
@@ -530,15 +472,4 @@ Page({
       url: '/pages/android/personal/personal',
     })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  
-
-  
 })

@@ -52,4 +52,6 @@
       </view>
     </view>
   </view>
+
+  <login logining='{{logining}}' bind:hideLogin='onHideLogin' />
 </view>
